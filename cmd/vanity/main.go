@@ -110,6 +110,7 @@ func main() {
 		*outputPath = path.Join(cwd, "dist")
 	}
 
+	info("loading configuration")
 	cfg, err := loadCfgFile(*cfgPath)
 	if err != nil {
 		fail("cannot load configuration: %v", err)
