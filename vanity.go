@@ -48,11 +48,12 @@ func (i Import) GoSourceMeta() string {
 
 func (i Import) HTMLPage() string {
 	return fmt.Sprintf(
-		`<!DOCTYPE><html lang="en"><head><title>%s</title><meta charset="utf-8"/><meta http-equiv="refresh" content="10; url=https://pkg.go.dev/%s">%s%s</head><body><p>Nothing to see here; <a href="https://pkg.go.dev/%s">move along</a>.</p></body></html>`,
+		`<!DOCTYPE><html lang="en"><head><title>%s</title><meta charset="utf-8"/><meta http-equiv="refresh" content="10; url=https://pkg.go.dev/%s">%s%s</head><body><p>Redirecting to docs at <a href="https://pkg.go.dev/%s">%s</a>...</p></body></html>`,
 		i.ImportRoot(),
 		i.ImportRoot(),
 		i.GoImportMeta(),
 		i.GoSourceMeta(),
+		i.ImportRoot(),
 		i.ImportRoot(),
 	)
 }
