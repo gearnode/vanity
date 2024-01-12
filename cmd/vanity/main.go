@@ -126,6 +126,6 @@ func main() {
 		}
 
 		filename := path.Join(dirname, "index.html")
-		os.WriteFile(filename, []byte(vanityImport.HTMLPage()), os.ModePerm)
+		os.WriteFile(filename, []byte(vanityImport.HTMLPage()), 0644)
 	}
 }
