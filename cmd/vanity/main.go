@@ -24,6 +24,7 @@ import (
 	"os"
 	"path"
 
+	"go.gearno.de/vanity"
 	"sigs.k8s.io/yaml"
 )
 
@@ -44,8 +45,12 @@ type (
 	}
 )
 
+func info(format string, args ...interface{}) {
+	fmt.Fprintf(os.Stderr, "info: "+format+"\n", args...)
+}
+
 func fail(format string, args ...interface{}) {
-	fmt.Printf("error: "+format+"\n", args...)
+	fmt.Fprintf(os.Stderr, "error: "+format+"\n", args...)
 	os.Exit(1)
 }
 
@@ -110,5 +115,17 @@ func main() {
 		fail("cannot load configuration: %v", err)
 	}
 
-	fmt.Printf("%#+v\n", cfg)
+	for _, importCfg := range cfg.Imports {
+		vanityImport := vanity.NewImport(cfg.DomainName, importCfg.VCS, importCfg.RepoRoot, importCfg.ImportPrefix)
+		info("generating %s", vanityImport.ImportRoot())
+
+		dirname := path.Join(*outputPath, importCfg.ImportPrefix)
+		err := os.MkdirAll(dirname, os.ModePerm)
+		if err != nil {
+			fail("cannot create %q directory: %v", dirname, err)
+		}
+
+		filename := path.Join(dirname, "index.html")
+		os.WriteFile(filename, []byte(vanityImport.HTMLPage()), os.ModePerm)
+	}
 }
