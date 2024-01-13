@@ -25,7 +25,15 @@ make install
 
 ## Usage
 
-TODO
+You can generate the static website with:
+
+	vanity -cfg example.org.yaml -output /usr/local/www/example.org
+
+## Build
+
+You can build the command line interface with:
+
+	make build
 
 ## Documentation
 
