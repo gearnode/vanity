@@ -79,6 +79,35 @@ func loadCfgFile(filename string) (*Cfg, error) {
 	return &cfg, nil
 }
 
+func validateCfg(cfg *Cfg) error {
+	if cfg.DomainName == "" {
+		return fmt.Errorf(`the "domain-name" configuration field cannot be left blank`)
+	}
+
+	prefixes := map[string]struct{}{}
+	for _, importCfg := range cfg.Imports {
+		if importCfg.VCS == "" {
+			return fmt.Errorf(`the "vcs" configuration field cannot be left blank`)
+		}
+
+		if importCfg.ImportPrefix == "" {
+			return fmt.Errorf(`the "import-prefix" configuration field cannot be left blank`)
+		}
+
+		if importCfg.RepoRoot == "" {
+			return fmt.Errorf(`the "repo-root" configuration field cannot be left blank`)
+		}
+
+		_, ok := prefixes[importCfg.ImportPrefix]
+		if ok {
+			return fmt.Errorf("duplicated import prefix: %s", importCfg.ImportPrefix)
+		}
+		prefixes[importCfg.ImportPrefix] = struct{}{}
+	}
+
+	return nil
+}
+
 func main() {
 	cfgPath := flag.String("cfg", "", `the path of the configuration file (default "./vanity.yaml")`)
 	outputPath := flag.String("output", "", `the path where generated file will be written (default "./dist")`)
@@ -116,25 +145,9 @@ func main() {
 		fail("cannot load configuration: %v", err)
 	}
 
-	prefixes := map[string]struct{}{}
-	for _, importCfg := range cfg.Imports {
-		if importCfg.VCS == "" {
-			fail(`the "vcs" configuration field cannot be left blank`)
-		}
-
-		if importCfg.ImportPrefix == "" {
-			fail(`the "import-prefix" configuration field cannot be left blank`)
-		}
-
-		if importCfg.RepoRoot == "" {
-			fail(`the "repo-root" configuration field cannot be left blank`)
-		}
-
-		_, ok := prefixes[importCfg.ImportPrefix]
-		if ok {
-			fail("duplicated import prefix: %s", importCfg.ImportPrefix)
-		}
-		prefixes[importCfg.ImportPrefix] = struct{}{}
+	info("validating configuration")
+	if err := validateCfg(cfg); err != nil {
+		fail("invalid configuration: %v", err)
 	}
 
 	for _, importCfg := range cfg.Imports {
