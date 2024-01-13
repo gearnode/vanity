@@ -30,7 +30,7 @@ aspects of the command line interface.
 You can also use the standard Go documentation tool to read code
 documentation, for example:
 
-	go doc -all github.com/gearnode/privatebin
+	go doc -all go.gearno.de/vanity
 	
 ## Contact
 
