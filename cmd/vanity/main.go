@@ -116,6 +116,27 @@ func main() {
 		fail("cannot load configuration: %v", err)
 	}
 
+	prefixes := map[string]struct{}{}
+	for _, importCfg := range cfg.Imports {
+		if importCfg.VCS == "" {
+			fail("the 'vcs' configuration field cannot be left blank")
+		}
+
+		if importCfg.ImportPrefix == "" {
+			fail("the 'import-prefix' configuration field cannot be left blank")
+		}
+
+		if importCfg.RepoRoot == "" {
+			fail("the 'repo-root' configuration field cannot be left blank")
+		}
+
+		_, ok := prefixes[importCfg.ImportPrefix]
+		if ok {
+			fail("duplicated import prefix: %s", importCfg.ImportPrefix)
+		}
+		prefixes[importCfg.ImportPrefix] = struct{}{}
+	}
+
 	for _, importCfg := range cfg.Imports {
 		vanityImport := vanity.NewImport(cfg.DomainName, importCfg.VCS, importCfg.RepoRoot, importCfg.ImportPrefix)
 		info("generating %s", vanityImport.ImportRoot())
