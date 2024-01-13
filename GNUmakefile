@@ -14,9 +14,20 @@ SRC=	cmd/vanity/main.go \
 	go.mod \
 	go.sum
 
-all: build
+all: build man
 
 build: $(BIN)
+
+.PHONY: man
+man:
+	@$(MKDIR) man
+	$(PANDOC) \
+		--standalone \
+		--to man \
+		-M footer=$(VERSION) \
+		-M date=$(DATETIME) \
+		doc/vanity.1.md \
+		-o man/privatebin.1
 
 $(BIN): $(SRC)
 	$(GO) build $(LDFLAGS) -o $(BIN) cmd/vanity/main.go
