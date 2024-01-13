@@ -21,6 +21,22 @@ import (
 	"path"
 )
 
+const (
+	importHTMLTemplate = `<!DOCTYPE>
+<html lang="en">
+  <head>
+    <title>%s</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="refresh" content="10; url=%s">
+    <meta name="go-import" content="%s %s %s"/>
+  </head>
+  <body>
+    <p>Redirecting to docs at <a href="%s">%s</a>...</p>
+  </body>
+</html>
+`
+)
+
 type (
 	Import struct {
 		DomainName   string
@@ -34,26 +50,20 @@ func NewImport(domain, vcs, root, prefix string) Import {
 	return Import{domain, vcs, root, prefix}
 }
 
+func (i Import) PkgGoDevLink() string {
+	return fmt.Sprintf("https://pkg.go.dev/%s", i.ImportRoot())
+}
+
 func (i Import) ImportRoot() string {
 	return path.Join(i.DomainName, i.ImportPrefix)
 }
 
-func (i Import) GoImportMeta() string {
-	return fmt.Sprintf(`<meta name="go-import" content="%s %s %s"/>`, i.VCS, i.RepoRoot, i.ImportRoot())
-}
-
-func (i Import) GoSourceMeta() string {
-	return fmt.Sprintf(`<meta name="go-source" content="%s %s %s %s"/>`, i.ImportRoot(), "_", "_", "_")
-}
-
 func (i Import) HTMLPage() string {
 	return fmt.Sprintf(
-		`<!DOCTYPE><html lang="en"><head><title>%s</title><meta charset="utf-8"/><meta http-equiv="refresh" content="10; url=https://pkg.go.dev/%s">%s%s</head><body><p>Redirecting to docs at <a href="https://pkg.go.dev/%s">%s</a>...</p></body></html>`,
+		importHTMLTemplate,
 		i.ImportRoot(),
-		i.ImportRoot(),
-		i.GoImportMeta(),
-		i.GoSourceMeta(),
-		i.ImportRoot(),
-		i.ImportRoot(),
+		i.PkgGoDevLink(),
+		i.ImportRoot(), i.VCS, i.RepoRoot,
+		i.PkgGoDevLink(), i.ImportRoot(),
 	)
 }
