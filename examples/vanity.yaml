@@ -1,0 +1,12 @@
+---
+domain-name: "go.gearno.de"
+imports:
+  - vcs: "git"
+    repo-root: "github.com/gearnode/privatebin"
+    import-prefix: "privatebin"
+  - vcs: "git"
+    repo-root: "github.com/gearnode/base58"
+    import-prefix: "crypto/base58"
+  - vcs: "git"
+    repo-root: "github.com/gearnode/vanity"
+    import-prefix: "vanity"
