@@ -28,8 +28,8 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-const (
-	version = "0.0.1"
+var (
+	Version = "unknown"
 )
 
 type (
@@ -122,7 +122,7 @@ func main() {
 	}
 
 	if *showVersion {
-		fmt.Printf("vanity cli version %s\n", version)
+		fmt.Printf("vanity cli version %s\n", Version)
 		os.Exit(0)
 	}
 
