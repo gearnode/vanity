@@ -5,7 +5,12 @@ Golang vanity import paths.
 
 ## Abstract
 
-TODO
+For the past decade, I've used NGINX for vanity Go imports in personal
+projects. Recently, setting up Go vanity imports at work made me
+realize that using NGINX for this is too complex and adds unnecessary
+maintenance. So, I created a tool that simplifies this process. Now,
+anyone can easily set up vanity imports on static websites like GitHub
+Pages or S3 with Cloudfront
 
 ## Install
 
