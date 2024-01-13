@@ -8,7 +8,7 @@ DATETIME=   "Jan 13, 2024"
 VERSION=    1.0.0
 LDFLAGS=    -ldflags "-X 'main.Version=$(VERSION)'"
 
-BIN=bin/vanity
+BIN=	bin/vanity
 SRC=	cmd/vanity/main.go \
 	vanity.go \
 	go.mod \
