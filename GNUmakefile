@@ -27,10 +27,18 @@ man:
 		-M footer=$(VERSION) \
 		-M date=$(DATETIME) \
 		doc/vanity.1.md \
-		-o man/privatebin.1
+		-o man/vanity.1
+	$(PANDOC) \
+		--standalone \
+		--to man \
+		-M footer=$(VERSION) \
+		-M date=$(DATETIME) \
+		doc/vanity.conf.5.md \
+		-o man/vanity.conf.5
 
 $(BIN): $(SRC)
 	$(GO) build $(LDFLAGS) -o $(BIN) cmd/vanity/main.go
 
 clean:
 	$(RM) bin
+	$(RM) man
