@@ -46,12 +46,12 @@ A bit more complete configuration file:
 ---
 domain-name: "go.gearno.de"
 imports:
-	- vcs: "git"
-	  repo-root: "github.com/gearnode/privatebin"
-	  import-prefix: "privatebin"
-	- vcs: "git"
-	  repo-root: "github.com/gearnode/vanity"
-	  import-prefix: "vanity"
+  - vcs: "git"
+    repo-root: "github.com/gearnode/privatebin"
+    import-prefix: "privatebin"
+  - vcs: "git"
+    repo-root: "github.com/gearnode/vanity"
+    import-prefix: "vanity"
 ```
 
 # AUTHORS
