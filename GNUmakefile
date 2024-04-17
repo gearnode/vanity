@@ -32,7 +32,7 @@ install: build man
 	$(INSTALL) -m 644 man/vanity.conf.5 $(MANDIR)/man5/vanity.conf.5
 
 uninstall:
-	$(RM) $(BINDIR)/privatebin
+	$(RM) $(BINDIR)/vanity
 	$(RM) $(MANDIR)/man1/vanity.1
 	$(RM) $(MANDIR)/man5/vanity.conf.5
 
