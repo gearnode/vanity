@@ -9,7 +9,7 @@ INSTALL = install
 RM = rm -f
 
 DATETIME=   "Apr 17, 2024"
-VERSION=    1.0.1
+VERSION=    1.0.0
 LDFLAGS = -ldflags "-X 'main.Version=$(VERSION)'"
 
 BIN = bin/vanity
