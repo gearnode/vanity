@@ -33,7 +33,7 @@ vanity import as a static website.
 The **vanity** utility exits 0 on success, and >0 if an error occurs.
 
 # EXAMPLES
-Create a paste on the default privatebin instance:
+Generate static website:
 
     $ vanity -cfg /usr/local/etc/vanity.yaml -output /usr/local/www/example.org
 
