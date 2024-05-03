@@ -23,6 +23,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"path/filepath"
 
 	"go.gearno.de/vanity"
 	"sigs.k8s.io/yaml"
@@ -111,6 +112,7 @@ func validateCfg(cfg *Cfg) error {
 func main() {
 	cfgPath := flag.String("cfg", "", `the path of the configuration file (default "./vanity.yaml")`)
 	outputPath := flag.String("output", "", `the path where generated file will be written (default "./dist")`)
+	flatFileUrls := flag.Bool("flat-file-urls", false, "generates .html files directly, avoiding directory-style URLs and trailing slashes")
 	showHelp := flag.Bool("help", false, "shows this help message")
 	showVersion := flag.Bool("version", false, "prints the vanity cli version")
 
@@ -154,13 +156,27 @@ func main() {
 		vanityImport := vanity.NewImport(cfg.DomainName, importCfg.VCS, importCfg.RepoRoot, importCfg.ImportPrefix)
 		info("generating %s", vanityImport.ImportRoot())
 
-		dirname := path.Join(*outputPath, importCfg.ImportPrefix)
-		err := os.MkdirAll(dirname, os.ModePerm)
-		if err != nil {
-			fail("cannot create %q directory: %v", dirname, err)
+		prefix := path.Join(*outputPath, importCfg.ImportPrefix)
+
+		var (
+			dirname  = prefix
+			filename = "index.html"
+		)
+		if *flatFileUrls {
+			dirname = filepath.Dir(prefix)
+			filename = filepath.Base(prefix) + ".html"
+
 		}
 
-		filename := path.Join(dirname, "index.html")
-		os.WriteFile(filename, []byte(vanityImport.HTMLPage()), 0644)
+		err := os.MkdirAll(dirname, os.ModePerm)
+		if err != nil {
+			fail("cannot create %q directory: %v", prefix, err)
+		}
+
+		os.WriteFile(
+			path.Join(dirname, filename),
+			[]byte(vanityImport.HTMLPage()),
+			0644,
+		)
 	}
 }

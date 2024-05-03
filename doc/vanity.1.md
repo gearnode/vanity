@@ -26,6 +26,11 @@ vanity import as a static website.
 **-cfg** \<filename\>
 : The path of the configuration file (default "vanity.yaml").
 
+**-flat-file-urls**
+: Generates .html files named after their respective paths, avoiding
+  directory-style URLs to prevent unwanted URL redirection, such as
+  the addition of a trailing slash that implies a directory structure.
+
 **-version**
 : Prints the vanity cli version.
 
